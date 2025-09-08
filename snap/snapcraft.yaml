@@ -34,18 +34,32 @@ parts:
     build-packages:
       - gcc
 
+plugs:
+  etc-nebula:
+    interface: system-files
+    read:
+      - /etc/nebula
+    write:
+      - /etc/nebula
+
 apps:
   nebula:
+    command: bin/nebula
+    plugs:
+      - network
+      - network-control
+      - etc-nebula
+
+  nebula-cert:
+    command: bin/nebula-cert
+    plugs:
+      - etc-nebula
+
+  run:
     command: bin/nebula -config $SNAP_COMMON/config/config.yaml
     plugs:
       - network
       - network-control
-  
-  cert-ca:
-    command: bin/nebula-cert ca -out-crt $SNAP_COMMON/certs/ca.crt -out-key $SNAP_COMMON/certs/ca.key
-
-  cert-sign:
-    command: bin/nebula-cert sign -ca-crt $SNAP_COMMON/certs/ca.crt -ca-key $SNAP_COMMON/certs/ca.key -out-crt $SNAP_COMMON/certs/nebula-node.crt -out-key $SNAP_COMMON/certs/nebula-node.key
 
   daemon:
     command: bin/nebula -config $SNAP_COMMON/config/config.yaml
