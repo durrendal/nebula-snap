@@ -1,5 +1,5 @@
 name: nebula
-version: v1.8.2
+version: v1.9.6
 
 summary: A scalable overlay networking tool.
 
@@ -21,7 +21,7 @@ description: |
 grade: stable
 confinement: strict
 
-base: core18
+base: core24
 
 parts:
   nebula:
@@ -29,6 +29,8 @@ parts:
     source: https://github.com/slackhq/nebula.git
     source-tag: $SNAPCRAFT_PROJECT_VERSION
     source-type: git
+    build-snaps:
+      - go/latest/stable
     build-packages:
       - gcc
 
