@@ -6,7 +6,6 @@ summary: A scalable overlay networking tool.
 description: |
   Nebula is a scalable overlay networking tool with a focus on performance, simplicity and security.
   It lets you seamlessly connect computers anywhere in the world. Nebula is portable, and runs on Linux, OSX, and Windows.
-  (Also: keep this quiet, but we have an early prototype running on iOS).
   It can be used to connect a small number of computers, but is also able to connect tens of thousands of computers.
 
   Nebula incorporates a number of existing concepts like encryption, security groups, certificates,
@@ -16,12 +15,20 @@ description: |
 
   More info on Nebula https://github.com/slackhq/nebula
 
-  For issues and other matters on this snap https://github.com/jwallden/nebula-snap
+  For issues and other matters on this snap https://github.com/durrendal/nebula-snap
+
+base: core24
+
+platforms:
+  amd64:
+  arm64:
+  armhf:
+  ppc64el:
+  s390x:
+  riscv64:
 
 grade: stable
 confinement: strict
-
-base: core24
 
 parts:
   nebula:
@@ -34,26 +41,15 @@ parts:
     build-packages:
       - gcc
 
-plugs:
-  etc-nebula:
-    interface: system-files
-    read:
-      - /etc/nebula
-    write:
-      - /etc/nebula
-
 apps:
   nebula:
     command: bin/nebula
     plugs:
       - network
       - network-control
-      - etc-nebula
 
   nebula-cert:
     command: bin/nebula-cert
-    plugs:
-      - etc-nebula
 
   run:
     command: bin/nebula -config $SNAP_COMMON/config/config.yaml
@@ -67,7 +63,3 @@ apps:
     plugs:
       - network
       - network-control
-
-layout:
-  /etc/nebula:
-    bind: $SNAP_COMMON
