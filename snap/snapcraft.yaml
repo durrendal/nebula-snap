@@ -50,6 +50,9 @@ apps:
 
   nebula-cert:
     command: bin/nebula-cert
+    plugs:
+      - home
+      - removable-media
 
   run:
     command: bin/nebula -config $SNAP_COMMON/config/config.yaml

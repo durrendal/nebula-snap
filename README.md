@@ -8,12 +8,8 @@ Current state:
   * `config.yaml in /var/snap/nebula/common/config`
   * `ca.crt in /var/snap/nebula/common/certs`
   * `nebula-node.crt and nebula-node.key in /var/snap/nebula/common/certs`
-* CA creation and certificate signing is working. However, the name of the produced certs are hardcoded to:
-  * `ca.crt`
-  * `ca.key`
-  * `nebula-node.crt`
-  * `nebula-node.key`
-* Since created certs are placed in `/var/snap/nebula/common/certs` the cert-functionality needs sudo permissions. Not optimal perhaps, but necessary.
+* CA creation and certificate signing is working. All nebula-cert commands function, however due to the way snaps works are exposed as `nebula.nebula-cert` instead of just `nebula-cert`.
+* Due to strict confinement, `nebula.nebula-cert` can only manipulate certs in `/home` `/mnt` and `/media`
 
 To bypass the above restrictions the snap can be installed with `--devmode`, thereby circumventing the sandboxing in place:
 
@@ -22,19 +18,17 @@ To bypass the above restrictions the snap can be installed with `--devmode`, the
 ## Usage
 
 ### Starting Nebula
-After placing a config.yaml in `/var/snap/nebula/common/config` you can either start Nebula manually or use the provided daemon
+After placing a config.yaml in `/var/snap/nebula/common/config` you should restart nebula using `snap restart nebula`. By default the daemon is enabled and running when you install the snap.
 
 See [here](https://arstechnica.com/gadgets/2019/12/how-to-set-up-your-own-nebula-mesh-vpn-step-by-step/) for instructions on the config file. Also, the [Nebula github page](https://github.com/slackhq/nebula) is a good resource. An example config.yaml can be found there.
 
 #### Start manually:
 `sudo nebula`
 
-You can NOT provide a location for the config.yaml file. It is hardcoded to `/var/snap/nebula/common/config`
+Due to the strict confinement used with Nebula you must place your config in `/var/snap/nebula/common/config.yaml`. The daemon and run commands for this snap default to these paths. Technically it should be able to tell nebula to use a specific path using the `-path` command, but it will be less seamless and may only work in `--devmode`.
 
-:warning: There seems to be an issue with the daemon after a reboot **if the address to the lighthouse is stated as a domain name (e g lighthouse.example.com)**. The daemon is supposed to be started automatically on boot and it gets started. However, Nebula does not get a connection to the lighthouse. A **manual restart of the daemon** fixes this: `sudo snap restart nebula.daemon`
-This problem does not, however, occur if the ip of the lighthouse is put into the config file. (See [here](https://github.com/slackhq/nebula/issues/206))
-
-This issue should be fixed in the next release, 1.7.0, as a result of the merged commit [here](https://github.com/slackhq/nebula/pull/791).  For now, you can add an IP address in place of a domain, or restart the nebula daemon on boot/reboot.
+You can validate that your nebula certificates are valid using:
+`nebula.nebula-cert print -path /var/snap/nebula/common/certs/node-crt.crt`
 
 Once the configuration is proven, start the snap proper:
 `sudo snap start nebula`
@@ -47,15 +41,8 @@ or using systemd:s logging facilities:
 
 ### Certificate creation
 
-#### Generate a Certificate Authority:
+Aside from needing to use `nebula.nebula-cert` arbitrary flags can be passed to the nebula-cert binary.
 
-`sudo nebula.cert-ca -name <ORGANIZATION_NAME>`
+`nebula.nebula-cert` additionally has access to the `/home` `/mnt` and `/media` which should ease the process of configuring and validating nebula certificates. Once configured, client certificates for the `nebula` binary will still need to be placed into `/var/snap/nebula/common/certs` for the vpn to operate.
 
-This will generate `ca.crt` and `ca.key`
-Again, paths are hardcoded to `/var/snap/nebula/common/certs` so NOT possible to change this at the moment.
-
-#### Generate node certificates and sign them with the above created CA key:
-
-`sudo nebula.cert-sign -name <CLIENT_NAME> -ip <CLIENT_IP_ADDRESS>`
-
-This will generate `nebula-node.crt` and `nebula-node.key` placed in `/var/snap/nebula/common/certs`
+For information on how to generate nebula certificates, please refer to the [official documentation matained by Defined](https://nebula.defined.net/docs/guides/quick-start/)
