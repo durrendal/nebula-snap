@@ -46,3 +46,12 @@ Aside from needing to use `nebula.nebula-cert` arbitrary flags can be passed to 
 `nebula.nebula-cert` additionally has access to the `/home` `/mnt` and `/media` which should ease the process of configuring and validating nebula certificates. Once configured, client certificates for the `nebula` binary will still need to be placed into `/var/snap/nebula/common/certs` for the VPN to operate.
 
 For information on how to generate nebula certificates, please refer to the [official documentation maintained by Defined](https://nebula.defined.net/docs/guides/quick-start/)
+
+# Issues?
+
+Feel free to open an issue on [github](https://github.com/durrendal/nebula-snap) but note that this is only a mirror and as such I might not see the issue right away.
+The main repository can be found [here.](https://krei.lambdacreate.com/snap/nebula)
+
+And if you need to reach me, please feel free to reach out to me via email or on oftc or libera.
+
+- Durrendal
