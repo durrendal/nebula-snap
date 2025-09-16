@@ -1,6 +1,6 @@
 # Nebula Snap package
 
-This is an atempt at creating a snap package for the Nebula overlay networking tool.
+This is an attempt at creating a snap package for the Nebula overlay networking tool.
 
 Current state:
 
@@ -11,7 +11,7 @@ Current state:
 * CA creation and certificate signing is working. All nebula-cert commands function, however due to the way snaps works are exposed as `nebula.nebula-cert` instead of just `nebula-cert`.
 * Due to strict confinement, `nebula.nebula-cert` can only manipulate certs in `/home` `/mnt` and `/media`
 
-To bypass the above restrictions the snap can be installed with `--devmode`, thereby circumventing the sandboxing in place:
+To bypass the above restrictions the snap can be installed with `--devmode`, thereby circumventing the sand boxing in place:
 
 `sudo snap install --devmode nebula`
 
@@ -43,6 +43,6 @@ or using systemd:s logging facilities:
 
 Aside from needing to use `nebula.nebula-cert` arbitrary flags can be passed to the nebula-cert binary.
 
-`nebula.nebula-cert` additionally has access to the `/home` `/mnt` and `/media` which should ease the process of configuring and validating nebula certificates. Once configured, client certificates for the `nebula` binary will still need to be placed into `/var/snap/nebula/common/certs` for the vpn to operate.
+`nebula.nebula-cert` additionally has access to the `/home` `/mnt` and `/media` which should ease the process of configuring and validating nebula certificates. Once configured, client certificates for the `nebula` binary will still need to be placed into `/var/snap/nebula/common/certs` for the VPN to operate.
 
-For information on how to generate nebula certificates, please refer to the [official documentation matained by Defined](https://nebula.defined.net/docs/guides/quick-start/)
+For information on how to generate nebula certificates, please refer to the [official documentation maintained by Defined](https://nebula.defined.net/docs/guides/quick-start/)
