@@ -36,8 +36,10 @@ parts:
     source: https://github.com/slackhq/nebula.git
     source-tag: $SNAPCRAFT_PROJECT_VERSION
     source-type: git
-    build-snaps:
-      - go/latest/stable
+    override-build: |
+      go build -ldflags "-X main.Build=$SNAPCRAFT_PROJECT_VERSION"
+      install -D -m755 nebula "$CRAFT_PART_INSTALL/bin/nebula"
+      install -D -m755 nebula-cert "$CRAFT_PART_INSTALL/bin/nebula-cert"
     build-packages:
       - gcc
 
