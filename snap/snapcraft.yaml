@@ -38,8 +38,8 @@ parts:
     source-type: git
     override-build: |
       go build -ldflags "-X main.Build=$SNAPCRAFT_PROJECT_VERSION"
-      install -D -m755 nebula "$CRAFT_PART_INSTALL/bin/nebula"
-      install -D -m755 nebula-cert "$CRAFT_PART_INSTALL/bin/nebula-cert"
+      install -D -m755 nebula "$SNAPCRAFT_PART_INSTALL/bin/nebula"
+      install -D -m755 nebula-cert "$SNAPCRAFT_PART_INSTALL/bin/nebula-cert"
     build-packages:
       - gcc
 
